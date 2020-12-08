@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  bip-address-mongodb:
+    image: mongo:latest
+    container_name: "bip-address-mongodb"
+    ports:
+     - 27021:27017
+   # environment:
+   #   MONGO_INITDB_ROOT_USERNAME: root
+   #   MONGO_INITDB_ROOT_PASSWORD:
+    networks:
+     - bit-address
+  bip-address-springboot:
+    image: bip-address-springboot
+    container_name: "bip-address-springboot"
+    build: 
+     context: ./
+     dockerfile: Dockerfile   
+    ports:
+     - 8085:8080
+    links:
+     - bip-address-mongodb
+    networks:
+     - bit-address
+    depends_on:
+       - bip-address-mongodb
+     
+networks:
+  bit-address:
